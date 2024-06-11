@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: nodejs-app
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          name: postgres-database
+          type: postgresql
+
+databases:
+  - name: postgres-database
+    plan: free
+    region: oregon
+    postgresVersion: 16
+    initCommands:
+      - apt-get update
+      - apt-get install -y python3 python3-pip postgresql-plpython3-16
